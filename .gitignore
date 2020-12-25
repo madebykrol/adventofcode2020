@@ -62,4 +62,5 @@ typings/
 .env
 report.*.json
 
-**/*.js
+*.js
+!eslintrc.js
