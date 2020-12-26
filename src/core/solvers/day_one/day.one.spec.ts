@@ -45,8 +45,6 @@ describe('Day One Tests', () => {
     it('Sets should sum up to target', async() => {
         await interactor.execute(new DayOne(inputData, 2020), outputPort);
         var sets = outputPort.present();
-        
-        console.log(sets);
         expect(sets.filter(set => set.reduce((sum, num) => sum+num) === 2020).length).toBe(sets.length);
     });
 });
