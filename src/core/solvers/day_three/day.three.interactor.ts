@@ -16,7 +16,7 @@ export default class DayThreeInteractor implements Interactor<DayThree, IDayThre
             for (let i: number = usecase.rowIncrement; i < terrain.length; i+=usecase.rowIncrement) {
                 columnPos = (columnPos + usecase.columnIncrement) % terrainSliceWidth
             
-                if(this.treeOnCoordiante(terrain, i, columnPos))
+                if(this.treeOnCoordinate(terrain, i, columnPos))
                     trees++;
             }
 
@@ -30,7 +30,7 @@ export default class DayThreeInteractor implements Interactor<DayThree, IDayThre
         return terrain.split('\n').map(row => row.trim().split(''))
     }
 
-    private treeOnCoordiante(terrain: string[][], x: number, y: number): boolean {
+    private treeOnCoordinate(terrain: string[][], x: number, y: number): boolean {
         return terrain[x][y] === "#"
     }
 }
