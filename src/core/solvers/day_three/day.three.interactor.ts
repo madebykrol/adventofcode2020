@@ -14,7 +14,7 @@ export default class DayThreeInteractor implements Interactor<DayThree, IDayThre
             let trees: number = 0;
 
             for (let i: number = usecase.rowIncrement; i < terrain.length; i+=usecase.rowIncrement) {
-                columnPos = this.screenWrapPosition(columnPos, usecase.columnIncrement, terrainSliceWidth);
+                columnPos = this.terrainWrapPosition(columnPos, usecase.columnIncrement, terrainSliceWidth);
             
                 if(this.treeOnCoordiante(terrain, i, columnPos))
                     trees++;
@@ -26,7 +26,7 @@ export default class DayThreeInteractor implements Interactor<DayThree, IDayThre
         });
     }
 
-    private screenWrapPosition(column: number, move: number, screenSize: number): number {
+    private terrainWrapPosition(column: number, move: number, screenSize: number): number {
         if ((column + move) >= screenSize) 
             return (column+move) - screenSize;
         
