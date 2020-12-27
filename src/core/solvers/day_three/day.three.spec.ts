@@ -26,7 +26,7 @@ describe('Day Three Tests', () => {
 ......#..#.....#.####........#.`, 3, 1
         ), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
 
         expect(trees).toBe(2)
     });
@@ -46,7 +46,7 @@ describe('Day Three Tests', () => {
 .#..#...#.#`, 3,1
         ), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
 
         expect(trees).toBe(7)
     });
@@ -67,7 +67,7 @@ describe('Day Three Tests', () => {
         ), outputPort);
 
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
 
         expect(trees).toBe(2)
     });
@@ -88,7 +88,7 @@ describe('Day Three Tests', () => {
         ), outputPort);
 
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
 
         expect(trees).toBe(3)
     });
@@ -109,7 +109,7 @@ describe('Day Three Tests', () => {
 .#..#...#.#`, 7,1
         ), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
 
         expect(trees).toBe(4)
     });
@@ -129,7 +129,7 @@ describe('Day Three Tests', () => {
 .#..#...#.#`, 1,2
         ), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
 
         expect(trees).toBe(2)
     });
@@ -137,14 +137,14 @@ describe('Day Three Tests', () => {
     it("Return correct amount of trees for 3,1", async () => {
         await interactor.execute(new DayThree(input, 3,1), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
         expect(trees).toBe(200)
     });
     
     it("Return correct amount of trees for 1,1", async () => {
         await interactor.execute(new DayThree(input, 1, 1), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
 
         expect(trees).toBe(66)
     });
@@ -152,7 +152,7 @@ describe('Day Three Tests', () => {
     it("Return correct amount of trees for 5,1", async () => {
         await interactor.execute(new DayThree(input, 5,1), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
 
         expect(trees).toBe(76)
     });
@@ -160,7 +160,7 @@ describe('Day Three Tests', () => {
     it("Return correct amount of trees for 7,1", async () => {
         await interactor.execute(new DayThree(input, 7,1), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
         
         expect(trees).toBe(81)
     });
@@ -168,7 +168,7 @@ describe('Day Three Tests', () => {
     it("Return correct amount of trees for 1,2", async () => {
         await interactor.execute(new DayThree(input, 1,2), outputPort);
 
-        let trees = outputPort.presentTreeAmount();
+        const trees = outputPort.presentTreeAmount();
         
         expect(trees).toBe(46)
     });
@@ -176,7 +176,7 @@ describe('Day Three Tests', () => {
 
 class OutputPortInTest implements IDayThreeOutputPort {
     
-    private trees: number = 0;
+    private trees = 0;
     
     displayAmountOfTrees(trees: number): void {
         this.trees = trees;

@@ -10,8 +10,8 @@ export default class DayThreeInteractor implements Interactor<DayThree, IDayThre
             const terrain: string[][] = this.generateTerrainGrid(usecase.input);
             const terrainSliceWidth: number = terrain[0].length;
             
-            let columnPos: number = 0;
-            let trees: number = 0;
+            let columnPos = 0;
+            let trees = 0;
 
             for (let i: number = usecase.rowIncrement; i < terrain.length; i+=usecase.rowIncrement) {
                 columnPos = (columnPos + usecase.columnIncrement) % terrainSliceWidth

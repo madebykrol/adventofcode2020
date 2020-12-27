@@ -1,14 +1,11 @@
+import { PasswordPolicy } from "./policy";
+
 export class DayTwo {
     input: string;
-    policy: Policy;
+    policy: PasswordPolicy;
 
-    constructor(input: string, policy: Policy) {
+    constructor(input: string, policy: PasswordPolicy) {
         this.input = input;
         this.policy = policy;
     }
-}
-
-export enum Policy {
-    AmountInRange,
-    XorPosition
 }
