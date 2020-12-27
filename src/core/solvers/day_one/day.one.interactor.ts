@@ -9,15 +9,17 @@ export default class DayOneInteractor implements Interactor<DayOne, IDayOneOutpu
     private foundSets: number[][] = new Array<Array<number>>();
     
     async execute(usecase: DayOne, outputPort: IDayOneOutputPort): Promise<UseCaseResult> {
+        return new Promise((resolve) => {
+            let report = usecase.report.split('\n').map(x => +x);
+            let workingSet: Array<number> = new Array<number>();
+    
+            this.generateSubSets(report.sort((a,b) => a-b), workingSet, 0, report.length, 0, usecase.target);
+           
+            outputPort.displaySets(this.foundSets);
+    
+            resolve(new UseCaseResult(true));
+        })
         
-        let report = usecase.report.split('\n').map(x => +x);
-        let workingSet: Array<number> = new Array<number>();
-
-        this.generateSubSets(report.sort((a,b) => a-b), workingSet, 0, report.length, 0, usecase.target);
-       
-        outputPort.displaySets(this.foundSets);
-
-        return new UseCaseResult(true);
     }
 
     private generateSubSets(completeSet: number[], workingSet: number[], beginFrom: number, readTo: number, setSum: number, target: number ) {

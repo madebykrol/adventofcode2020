@@ -15,15 +15,16 @@ export default class DayTwoInteractor implements Interactor<DayTwo, IDayTwoOutpu
         ]);
 
     async execute(usecase: DayTwo, outputPort: IDayTwoOutputPort): Promise<UseCaseResult> {
-
-        outputPort.displayValidPasswords(
-            usecase.input.split('\n')
-            .filter(pwdLine => 
-                this.runPolicy(pwdLine, usecase.policy)
-            )
-        );
-
-        return new UseCaseResult(true);
+        return new Promise((resolve) =>  {
+            outputPort.displayValidPasswords(
+                usecase.input.split('\n')
+                .filter(pwdLine => 
+                    this.runPolicy(pwdLine, usecase.policy)
+                )
+            );
+    
+            resolve(new UseCaseResult(true));
+        })
     }
 
     private runPolicy(password: string, policy:Policy):boolean {
