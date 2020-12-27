@@ -1,6 +1,7 @@
 import {Interactor} from 'interactr/Interactor';
 import {UseCaseResult} from 'interactr/UseCaseResult';
-import {DayTwo, Policy } from './day.two';
+import {DayTwo} from './day.two';
+import {PasswordPolicy} from './policy'
 import IDayTwoOutputPort from './day.two.output';
 
 
@@ -8,10 +9,10 @@ export default class DayTwoInteractor implements Interactor<DayTwo, IDayTwoOutpu
 
     private readonly pwdPolicyExpression: RegExp = /^(\d{1,})-(\d{1,}) (.): ([a-z]{1,})/;
 
-    private policyMap: Map<Policy, (pos1: number, pos2: number, token:string, password: string) => boolean>
+    private policyMap: Map<PasswordPolicy, (pos1: number, pos2: number, token:string, password: string) => boolean>
         = new Map([
-            [Policy.XorPosition, this.xorPasswordPolicy],
-            [Policy.AmountInRange, this.amountInRangePolicy]
+            [PasswordPolicy.XorPosition, this.xorPasswordPolicy],
+            [PasswordPolicy.AmountInRange, this.amountInRangePolicy]
         ]);
 
     async execute(usecase: DayTwo, outputPort: IDayTwoOutputPort): Promise<UseCaseResult> {
@@ -27,7 +28,7 @@ export default class DayTwoInteractor implements Interactor<DayTwo, IDayTwoOutpu
         })
     }
 
-    private runPolicy(password: string, policy:Policy):boolean {
+    private runPolicy(password: string, policy:PasswordPolicy):boolean {
         const match = password.match(this.pwdPolicyExpression);
                 
         const policyMethod = this.policyMap.get(policy);
@@ -43,7 +44,7 @@ export default class DayTwoInteractor implements Interactor<DayTwo, IDayTwoOutpu
     }
 
     private amountInRangePolicy(lowerBound: number, upperbound: number, token: string, password: string): boolean {
-        const regex:RegExp = new RegExp(token, 'g');
+        const regex = new RegExp(token, 'g');
         const matchAmounts = (password.match(regex) ||[]).length;
         return matchAmounts >= lowerBound && matchAmounts <= upperbound;
     }

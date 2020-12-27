@@ -10,8 +10,8 @@ export default class DayOneInteractor implements Interactor<DayOne, IDayOneOutpu
     
     async execute(usecase: DayOne, outputPort: IDayOneOutputPort): Promise<UseCaseResult> {
         return new Promise((resolve) => {
-            let report = usecase.report.split('\n').map(x => +x);
-            let workingSet: Array<number> = new Array<number>();
+            const report = usecase.report.split('\n').map(x => +x);
+            const workingSet: Array<number> = new Array<number>();
     
             this.generateSubSets(report.sort((a,b) => a-b), workingSet, 0, report.length, 0, usecase.target);
            

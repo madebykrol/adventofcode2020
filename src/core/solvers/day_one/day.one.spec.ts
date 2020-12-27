@@ -1,9 +1,7 @@
 import DayOneInteractor from "./day.one.interactor";
 import DayOne from "./day.one";
 import IDayOneOutputPort from "./day.one.output";
-
 import fs from 'fs';
-import { start } from "repl";
 
 describe('Day One Tests', () => {
 
@@ -23,28 +21,28 @@ describe('Day One Tests', () => {
 
     it('Should return atleast one set' , async () => {
         await interactor.execute(new DayOne(inputData, 2020), outputPort);
-        var sets = outputPort.present();
+        const sets = outputPort.present();
 
         expect(sets.length).toBeGreaterThanOrEqual(1);
     });
 
     it('Should return atleast one set with two elements', async() => {
         await interactor.execute(new DayOne(inputData, 2020), outputPort);
-        var sets = outputPort.present();
+        const sets = outputPort.present();
 
         expect(sets.filter(set => set.length == 2).length).toBeGreaterThanOrEqual(1);
     });
 
     it('Should return atleast one set with three elements', async() => {
         await interactor.execute(new DayOne(inputData, 2020), outputPort);
-        var sets = outputPort.present();
+        const sets = outputPort.present();
 
         expect(sets.filter(set => set.length == 3).length).toBeGreaterThanOrEqual(1);
     });
 
     it('Sets should sum up to target', async() => {
         await interactor.execute(new DayOne(inputData, 2020), outputPort);
-        var sets = outputPort.present();
+        const sets = outputPort.present();
         expect(sets.filter(set => set.reduce((sum, num) => sum+num) === 2020).length).toBe(sets.length);
     });
 });
