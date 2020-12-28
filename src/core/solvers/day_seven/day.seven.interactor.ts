@@ -12,12 +12,11 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
 
             const bagRules = this.parseBagRules(usecase.input);
 
-            for (let i = 0; i < bagRules.length; i++) {
-                const bag = bagRules[i];
-                if (this.traverseBagTree(bagRules, bag, usecase.targetBag)) {
-                    this.addContainerIfUnique(bag);
+            bagRules.forEach((value, key) => {
+                if (this.traverseBagTree(bagRules, value, usecase.targetBag)) {
+                    this.addContainerIfUnique(value);
                 }
-            }
+            });
 
             outputPort.displayAmountOfBags(this.containers.length);
 
@@ -25,9 +24,9 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
         });
     }
 
-    private parseBagRules(rules: string): Array<Bag> {
+    private parseBagRules(rules: string): Map<string, Bag> {
         
-        const bagRules: Array<Bag> = new Array<Bag>();
+        const bagRules: Map<string, Bag> = new Map<string, Bag>();
         const bagRuleStrings = rules.split(/\r\n\r\n|\n/gm);
         
         for(let i = 0; i < bagRuleStrings.length; i++) {
@@ -49,16 +48,16 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
                 }
             );
                 
-            bagRules.push(new Bag(rule[1].trim(), capacity));
+            bagRules.set(rule[1].trim(), new Bag(rule[1].trim(), capacity));
         }
 
         return bagRules;
     }
 
-    private traverseBagTree(bagRules: Array<Bag>, currentBag: Bag, target: string): boolean {
+    private traverseBagTree(bagRules: Map<string,Bag>, currentBag: Bag, target: string): boolean {
         let inTree = false;
         currentBag.capacity.forEach((value, key) => {
-            const bag = bagRules.find(x => x.name.trim() == key.trim());
+            const bag = bagRules.get(key.trim());
             if (bag != undefined && (bag.name === target || this.traverseBagTree(bagRules, bag, target)))
                 inTree = true;
         });
