@@ -12,43 +12,49 @@ export class DayFiveInteractor implements Interactor<DayFive, IDayFiveOutputPort
 
     async execute(usecase: DayFive, outputPort: IDayFiveOutputPort): Promise<UseCaseResult> {
         return new Promise(resolve => {
-            const boardingPasses:Array<BoardingPass> = usecase.input.split('\n').map(boardingPassBSP => {
-                const foundRow = this.traverseBSP(boardingPassBSP.substr(0, 7).split(''), 0, 0, 127);
-                const foundCol = this.traverseBSP(boardingPassBSP.substr(7, 3).split(''), 0, 0, 7);
-
-                return new BoardingPass(foundRow, foundCol, (foundRow * 8) + foundCol);
-            });
-
+            const boardingPasses:Array<BoardingPass> = this.parseBoardingPasses(usecase.input);
             outputPort.displayHighestSeatId(boardingPasses.sort((a,b) => {
                 return b.seatId - a.seatId
             })[0].seatId);
            
-            let prevSeat: BoardingPass|undefined;
-
-            done:
-            for(let i = 1; i < 126; i++) {
-                for(let j = 0; j < 7; j++) {
-                    const seat = boardingPasses.find(x => x.row == i && x.column == j);
-                    
-                    if(prevSeat != undefined && seat == undefined) {
-                        outputPort.displayEmptySeat(prevSeat.seatId+1);
-                        break done;
-                    }
-
-                    prevSeat = seat;
-                }
-            }
+            outputPort.displayEmptySeat(this.findEmptySeatId(boardingPasses))
 
             resolve(new UseCaseResult(true));
         })
         
     }
 
+    private findEmptySeatId(boardingPasses: Array<BoardingPass>): number {
+        let prevSeat: BoardingPass|undefined;
+
+        for(let i = 1; i < 126; i++) {
+            for(let j = 0; j < 7; j++) {
+                const seat = boardingPasses.find(x => x.row === i && x.column === j);
+                
+                if (prevSeat != undefined && seat == undefined)
+                    return prevSeat.seatId+1;
+
+                prevSeat = seat;
+            }
+        }
+
+        return -1;
+    }
+
+    private parseBoardingPasses(input: string): Array<BoardingPass> {
+        return input.split('\n').map(boardingPassBSP => {
+            const foundRow = this.traverseBSP(boardingPassBSP.substr(0, 7).split(''), 0, 0, 127);
+            const foundCol = this.traverseBSP(boardingPassBSP.substr(7, 3).split(''), 0, 0, 7);
+
+            return new BoardingPass(foundRow, foundCol, (foundRow * 8) + foundCol);
+        });
+    }
+
     private traverseBSP(bsp: string[], nodePos: number, lowerBound: number, upperBound: number): number {
         const node = bsp[nodePos];
         const middle = (upperBound + lowerBound) / 2;
 
-        if (nodePos == bsp.length-1)
+        if (nodePos === bsp.length-1)
             return node === DayFiveInteractor.FRONT || node === DayFiveInteractor.LEFT 
             ? Math.floor(middle) 
             : Math.ceil(middle)
