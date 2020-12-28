@@ -1,0 +1,57 @@
+import { DaySevenInteractor } from "./day.seven.interactor";
+import { IDaySevenOutputPort } from "./day.seven.outputport";
+
+import fs from 'fs';
+import { DaySeven } from "./day.seven";
+
+
+describe("day seven test suite", () => {
+
+    let interactor: DaySevenInteractor;
+    let outputPort: OutputPortUnderTest; 
+    let input: string;
+
+
+    beforeAll(() => {
+        input = fs.readFileSync('src/infrastructure/day.seven.input.txt','utf-8');
+    });
+    beforeEach(() => {
+        interactor = new DaySevenInteractor();
+        outputPort = new OutputPortUnderTest();
+    });
+
+    it('4 bag color that can contain atleast one "shiny gold bag" in testData', async () => {
+        await interactor.execute(new DaySeven(
+`light red bags contain 1 bright white bag, 2 muted yellow bags.
+dark orange bags contain 3 bright white bags, 4 muted yellow bags.
+bright white bags contain 1 shiny gold bag.
+muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
+shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
+dark olive bags contain 3 faded blue bags, 4 dotted black bags.
+vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
+faded blue bags contain no other bags.
+dotted black bags contain no other bags.`
+        ), outputPort);
+
+        expect(outputPort.presentAmountOfBags()).toBe(4);
+    });
+
+    it('4 bag color that can contain atleast one "shiny gold bag" in testData', async () => {
+        await interactor.execute(new DaySeven(input), outputPort);
+
+        expect(outputPort.presentAmountOfBags()).toBe(4);
+    });
+});
+
+class OutputPortUnderTest implements IDaySevenOutputPort {
+
+    private bags = 0;
+
+    displayAmountOfBags(bags: number): void {
+        this.bags = bags;
+    }
+
+    presentAmountOfBags(): number {
+        return this.bags;
+    }
+}
