@@ -1,6 +1,5 @@
 import {Interactor} from 'interactr/Interactor';
 import {UseCaseResult} from 'interactr/UseCaseResult';
-import { prependListener } from 'process';
 import { BoardingPass } from '../../models/boardingpass';
 import { DayFive } from './day.five';
 import { IDayFiveOutputPort } from './day.five.output';
@@ -9,6 +8,11 @@ export class DayFiveInteractor implements Interactor<DayFive, IDayFiveOutputPort
 
     private static readonly FRONT: string = "F";
     private static readonly LEFT: string = "L";
+
+    private static readonly ROWS: number = 127;
+    private static readonly COLS: number = 7;
+
+    private static readonly SEAT_ID_FACTOR: number = 8;
 
     async execute(usecase: DayFive, outputPort: IDayFiveOutputPort): Promise<UseCaseResult> {
         return new Promise(resolve => {
@@ -27,8 +31,8 @@ export class DayFiveInteractor implements Interactor<DayFive, IDayFiveOutputPort
     private findEmptySeatId(boardingPasses: Array<BoardingPass>): number {
         let prevSeat: BoardingPass|undefined;
 
-        for(let i = 1; i < 126; i++) {
-            for(let j = 0; j < 7; j++) {
+        for(let i = 0; i < DayFiveInteractor.ROWS; i++) {
+            for(let j = 0; j < DayFiveInteractor.COLS; j++) {
                 const seat = boardingPasses.find(x => x.row === i && x.column === j);
                 
                 if (prevSeat != undefined && seat == undefined)
@@ -43,10 +47,10 @@ export class DayFiveInteractor implements Interactor<DayFive, IDayFiveOutputPort
 
     private parseBoardingPasses(input: string): Array<BoardingPass> {
         return input.split('\n').map(boardingPassBSP => {
-            const foundRow = this.traverseBSP(boardingPassBSP.substr(0, 7).split(''), 0, 0, 127);
-            const foundCol = this.traverseBSP(boardingPassBSP.substr(7, 3).split(''), 0, 0, 7);
+            const foundRow = this.traverseBSP(boardingPassBSP.substr(0, 7).split(''), 0, 0, DayFiveInteractor.ROWS);
+            const foundCol = this.traverseBSP(boardingPassBSP.substr(7, 3).split(''), 0, 0, DayFiveInteractor.COLS);
 
-            return new BoardingPass(foundRow, foundCol, (foundRow * 8) + foundCol);
+            return new BoardingPass(foundRow, foundCol, (foundRow * DayFiveInteractor.SEAT_ID_FACTOR) + foundCol);
         });
     }
 
