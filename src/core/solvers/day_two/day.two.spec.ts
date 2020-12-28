@@ -44,7 +44,6 @@ describe('Day Two Tests', () => {
 
         const passwords = outputPort.presentPasswords();
 
-
         expect(passwords.length).toBe(2);
     });
 
