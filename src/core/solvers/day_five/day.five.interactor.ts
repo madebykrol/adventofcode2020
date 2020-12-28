@@ -48,15 +48,14 @@ export class DayFiveInteractor implements Interactor<DayFive, IDayFiveOutputPort
         const node = bsp[nodePos];
         const middle = (upperBound + lowerBound) / 2;
 
-        if (node === DayFiveInteractor.FRONT || node === DayFiveInteractor.LEFT) {
-            if (nodePos == bsp.length-1)
-                return Math.floor(middle);
+        if (nodePos == bsp.length-1)
+            return node === DayFiveInteractor.FRONT || node === DayFiveInteractor.LEFT 
+            ? Math.floor(middle) 
+            : Math.ceil(middle)
 
+        if (node === DayFiveInteractor.FRONT || node === DayFiveInteractor.LEFT) {
             return this.traverseBSP(bsp, nodePos+1, lowerBound, Math.floor(middle))
         } 
-
-        if (nodePos == bsp.length-1)
-            return Math.ceil(middle)
 
         return this.traverseBSP(bsp, nodePos+1, Math.ceil(middle), upperBound)
     }
