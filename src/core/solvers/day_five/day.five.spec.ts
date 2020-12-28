@@ -44,8 +44,8 @@ BBFFBBFRLL`), outputPort);
 
 class OutputPortUnderTest implements IDayFiveOutputPort {
 
-    private highestSeatId:number = 0;
-    private emptySeatId: number = 0;
+    private highestSeatId = 0;
+    private emptySeatId = 0;
 
     displayHighestSeatId(id: number): void {
         this.highestSeatId = id;

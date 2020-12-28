@@ -31,8 +31,8 @@ export class DayFiveInteractor implements Interactor<DayFive, IDayFiveOutputPort
     private findEmptySeatId(boardingPasses: Array<BoardingPass>): number {
         let prevSeat: BoardingPass|undefined;
 
-        for(let i = 0; i < DayFiveInteractor.ROWS; i++) {
-            for(let j = 0; j < DayFiveInteractor.COLS; j++) {
+        for (let i = 0; i < DayFiveInteractor.ROWS; i++) {
+            for (let j = 0; j < DayFiveInteractor.COLS; j++) {
                 const seat = boardingPasses.find(x => x.row === i && x.column === j);
                 
                 if (prevSeat != undefined && seat == undefined)
@@ -61,12 +61,12 @@ export class DayFiveInteractor implements Interactor<DayFive, IDayFiveOutputPort
         if (nodePos === bsp.length-1)
             return node === DayFiveInteractor.FRONT || node === DayFiveInteractor.LEFT 
             ? Math.floor(middle) 
-            : Math.ceil(middle)
+            : Math.ceil(middle);
 
         if (node === DayFiveInteractor.FRONT || node === DayFiveInteractor.LEFT) {
-            return this.traverseBSP(bsp, nodePos+1, lowerBound, Math.floor(middle))
+            return this.traverseBSP(bsp, nodePos+1, lowerBound, Math.floor(middle));
         } 
 
-        return this.traverseBSP(bsp, nodePos+1, Math.ceil(middle), upperBound)
+        return this.traverseBSP(bsp, nodePos+1, Math.ceil(middle), upperBound);
     }
 }
