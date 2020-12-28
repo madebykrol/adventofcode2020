@@ -12,9 +12,9 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
 
             const bagRules = this.parseBagRules(usecase.input);
 
-            for(let i = 0; i < bagRules.length; i++) {
+            for (let i = 0; i < bagRules.length; i++) {
                 const bag = bagRules[i];
-                if(this.traverseBagTree(bagRules, bag, "shiny gold")) {
+                if (this.traverseBagTree(bagRules, bag, usecase.targetBag)) {
                     this.addContainerIfUnique(bag);
                 }
             }
@@ -23,30 +23,6 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
 
             resolve(new UseCaseResult(true));
         });
-    }
-
-    private traverseBagTree(bagRules: Array<Bag>, currentBag: Bag, target: string): boolean {
-        if (currentBag.capacity.size == 0)
-            return false;
-        
-        let inTree = false;
-        currentBag.capacity.forEach((value, key) => {
-            const bag = bagRules.find(x => x.name.trim() == key.trim());
-            if (bag != undefined && (bag.name === target || this.traverseBagTree(bagRules, bag, target)))
-                inTree = true;
-        });
-
-        if (inTree) {
-            this.addContainerIfUnique(currentBag);
-            return true;
-        }
-
-        return false;
-    }   
-
-    private addContainerIfUnique(bag:Bag) {
-        if (this.containers.find(x => x.name.trim() == bag.name.trim()) == undefined)
-            this.containers.push(bag)
     }
 
     private parseBagRules(rules: string): Array<Bag> {
@@ -78,4 +54,26 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
 
         return bagRules;
     }
+
+    private traverseBagTree(bagRules: Array<Bag>, currentBag: Bag, target: string): boolean {
+        let inTree = false;
+        currentBag.capacity.forEach((value, key) => {
+            const bag = bagRules.find(x => x.name.trim() == key.trim());
+            if (bag != undefined && (bag.name === target || this.traverseBagTree(bagRules, bag, target)))
+                inTree = true;
+        });
+
+        if (inTree) {
+            this.addContainerIfUnique(currentBag);
+            return true;
+        }
+
+        return false;
+    }   
+
+    private addContainerIfUnique(bag:Bag) {
+        if (this.containers.find(x => x.name.trim() == bag.name.trim()) == undefined)
+            this.containers.push(bag)
+    }
+
 }

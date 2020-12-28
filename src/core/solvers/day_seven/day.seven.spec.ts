@@ -30,16 +30,16 @@ shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
 dark olive bags contain 3 faded blue bags, 4 dotted black bags.
 vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 faded blue bags contain no other bags.
-dotted black bags contain no other bags.`
+dotted black bags contain no other bags.`, "shiny gold"
         ), outputPort);
 
         expect(outputPort.presentAmountOfBags()).toBe(4);
     });
 
-    it('4 bag color that can contain atleast one "shiny gold bag" in testData', async () => {
-        await interactor.execute(new DaySeven(input), outputPort);
+    it('139 bag color that can contain atleast one "shiny gold bag" in liveData', async () => {
+        await interactor.execute(new DaySeven(input, "shiny gold"), outputPort);
 
-        expect(outputPort.presentAmountOfBags()).toBe(4);
+        expect(outputPort.presentAmountOfBags()).toBe(139);
     });
 });
 
