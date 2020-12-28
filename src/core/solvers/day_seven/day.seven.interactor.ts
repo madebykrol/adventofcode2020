@@ -30,13 +30,12 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
         const bagRuleStrings = rules.split(/\r\n\r\n|\n/gm);
         
         for(let i = 0; i < bagRuleStrings.length; i++) {
-
-            const rule = bagRuleStrings[i].match(/(.+?\s.+?)\sbags\scontain\s(.+)/);
             
+            const rule = bagRuleStrings[i].match(/(.+?\s.+?)\sbags\scontain\s(.+)/);
+            const capacity: Map<string, number> = new Map<string, number>();
+
             if(rule == null) 
                 continue;
-
-            const capacity: Map<string, number> = new Map<string, number>();
 
             rule[2].split(',').map(x => 
                 {
