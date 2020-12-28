@@ -11,6 +11,12 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
         return new Promise(resolve => {
 
             const bagRules = this.parseBagRules(usecase.input);
+            const targetBag = bagRules.get(usecase.targetBag.trim());
+
+            if(targetBag == undefined) {
+                resolve(new UseCaseResult(false))
+                return;
+            }
 
             bagRules.forEach((value, key) => {
                 if (this.traverseBagTree(bagRules, value, usecase.targetBag)) {
@@ -19,6 +25,7 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
             });
 
             outputPort.displayAmountOfBags(this.containers.length);
+            outputPort.displayTotalCapacityForTarget(this.calculateTotalCapacity(bagRules, targetBag))
 
             resolve(new UseCaseResult(true));
         });
@@ -30,7 +37,7 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
         const bagRuleStrings = rules.split(/\r\n\r\n|\n/gm);
         
         for(let i = 0; i < bagRuleStrings.length; i++) {
-            
+
             const rule = bagRuleStrings[i].match(/(.+?\s.+?)\sbags\scontain\s(.+)/);
             const capacity: Map<string, number> = new Map<string, number>();
 
@@ -51,6 +58,20 @@ export class DaySevenInteractor implements Interactor<DaySeven, IDaySevenOutputP
         }
 
         return bagRules;
+    }
+
+    private calculateTotalCapacity(bagRules: Map<string, Bag>, bag: Bag): number {
+
+        let capacity = 0;
+
+        bag.capacity.forEach((value, key) => {
+            const nextBag = bagRules.get(key);
+            if(nextBag == undefined)
+                return;
+            capacity += value * (1 + this.calculateTotalCapacity(bagRules, nextBag));
+        });
+
+        return capacity;
     }
 
     private traverseBagTree(bagRules: Map<string,Bag>, currentBag: Bag, target: string): boolean {
