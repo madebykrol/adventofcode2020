@@ -61,7 +61,7 @@ dotted black bags contain no other bags.`, "shiny gold"
     it('139 bag color that can contain atleast one "shiny gold bag" in liveData', async () => {
         await interactor.execute(new DaySeven(input, "shiny gold"), outputPort);
 
-        expect(outputPort.presentTotalCapacityForTarget()).toBe(32);
+        expect(outputPort.presentTotalCapacityForTarget()).toBe(58175);
     });
 });
 
